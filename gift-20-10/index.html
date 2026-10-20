@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>A Little Gift for You — 20/10 Edition</title>
+  <meta name="description" content="Một món quà nhỏ ấm áp dành tặng bạn nhân ngày Phụ nữ Việt Nam 20/10." />
+  <meta name="theme-color" content="#fdf6f0" />
+
+  <!-- Google Fonts hỗ trợ đầy đủ tiếng Việt (có fallback an toàn khi offline) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Lớp Canvas cho hiệu ứng cánh hoa, đốm sáng, confetti và pháo hoa -->
+  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Thanh điều hướng phía trên & Nút điều khiển âm thanh -->
+  <header class="top-bar">
+    <div class="brand-badge" aria-label="Phiên bản 20/10">
+      <span class="brand-dot"></span>
+      <span class="brand-text">20 · 10 Edition</span>
+    </div>
+
+    <!-- Thanh tiến trình 5 bước -->
+    <nav class="step-indicator" aria-label="Tiến trình khám phá món quà">
+      <span class="step-dot active" data-step="1" title="Mở cửa"></span>
+      <span class="step-dot" data-step="2" title="Tiệm hoa"></span>
+      <span class="step-dot" data-step="3" title="Hộp quà"></span>
+      <span class="step-dot" data-step="4" title="Thư tay"></span>
+      <span class="step-dot" data-step="5" title="Lời chúc kết"></span>
+    </nav>
+
+    <button id="btn-audio-toggle" class="icon-btn" type="button" aria-label="Bật hoặc tắt nhạc nền" aria-pressed="false">
+      <svg class="icon-sound-off" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+      </svg>
+      <svg class="icon-sound-on hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+      </svg>
+      <span class="audio-label">Nhạc: Tắt</span>
+    </button>
+  </header>
+
+  <!-- Thông báo Toast nội tuyến (Thay thế hoàn toàn alert) -->
+  <div id="toast-notification" class="toast" role="status" aria-live="polite">
+    <span id="toast-message">Bó hoa này là dành cho bạn!</span>
+  </div>
+
+  <!-- Khung chứa 5 màn hình chính -->
+  <main class="app-stage">
+
+    <!-- ==========================================
+         MÀN HÌNH 1: WELCOME — CÁNH CỬA NGÀY 20/10
+         ========================================== -->
+    <section id="screen-welcome" class="screen active" aria-labelledby="welcome-title">
+      <div class="card-glass welcome-card">
+        <p class="eyebrow-tag">A Little Gift for You</p>
+        <h1 id="welcome-title" class="hero-title">Happy Vietnamese<br />Women's Day</h1>
+
+        <!-- Khung vòm cánh cửa / phong bì trang trí ở giữa -->
+        <div id="welcome-portal" class="portal-illustration" role="img" aria-label="Cánh cửa khu vườn quà tặng 20/10">
+          <div class="portal-glow"></div>
+          <div class="portal-arch">
+            <div class="portal-door portal-door-left">
+              <span class="door-knob"></span>
+            </div>
+            <div class="portal-door portal-door-right">
+              <span class="door-knob"></span>
+            </div>
+            <div class="portal-inner-scene">
+              <svg viewBox="0 0 120 120" class="portal-inner-svg">
+                <circle cx="60" cy="48" r="24" fill="rgba(255, 223, 186, 0.55)" />
+                <path d="M60 88 C60 65, 42 52, 42 38 C42 29, 52 25, 60 35 C68 25, 78 29, 78 38 C78 52, 60 65, 60 88 Z" fill="#e88d96" />
+                <path d="M35 95 Q60 78 85 95" stroke="#d4af37" stroke-width="2" fill="none" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div class="portal-seal">20/10</div>
+          </div>
+        </div>
+
+
+        </p>
+
+        <div class="action-row">
+          <button id="btn-open-welcome" class="btn btn-primary btn-shimmer" type="button">
+            <span>Click to Open</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MÀN HÌNH 2: FLOWER SHOP — TIỆM HOA CHO bạn
+         ========================================== -->
+    <section id="screen-flowers" class="screen" aria-labelledby="flowers-title" hidden>
+      <div class="card-glass shop-card">
+        <div class="screen-header">
+          <button class="btn-back" type="button" data-nav-target="screen-welcome" aria-label="Quay lại màn hình chào mừng">
+            ← Quay lại
+          </button>
+          <span class="screen-step-badge">Bước 1 / 4 · Tiệm Hoa Nhỏ</span>
+        </div>
+
+        <h2 id="flowers-title" class="section-title">Chọn một bó hoa cho riêng mình</h2>
+        <p class="section-desc">Mỗi bó hoa có một lời nhắn nhỏ dành tặng bạn hôm nay.</p>
+
+        <!-- Trạng thái 1: Lưới 3 bó hoa để chọn -->
+        <div id="flower-grid" class="flower-grid" role="listbox" aria-label="Danh sách 3 bó hoa">
+          <!-- Được render tự động từ dữ liệu trong script.js để dễ chỉnh sửa -->
+        </div>
+
+        <!-- Trạng thái 2: Chi tiết bó hoa khi đã chọn -->
+        <div id="flower-showcase" class="flower-showcase hidden" aria-live="polite">
+          <div class="showcase-visual-wrap">
+            <div class="showcase-halo"></div>
+            <div id="showcase-svg-container" class="showcase-svg-container"></div>
+          </div>
+          <div class="showcase-content">
+            <span id="showcase-tag" class="flower-tag">Bó hoa dành cho bạn</span>
+            <h3 id="showcase-name" class="showcase-title">Hoa Tulip Hồng</h3>
+            <blockquote id="showcase-wish" class="handwritten-wish">
+              “Mong bạn luôn dịu dàng với chính mình và luôn được yêu thương theo cách bạn xứng đáng.”
+            </blockquote>
+            <div class="action-row dual-actions">
+              <button id="btn-reselect-flower" class="btn btn-secondary" type="button">
+                Chọn bó hoa khác
+              </button>
+              <button id="btn-confirm-flower" class="btn btn-primary btn-shimmer" type="button">
+                Nhận bó hoa này
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MÀN HÌNH 3: MYSTERY GIFT — HỘP QUÀ BÍ MẬT
+         ========================================== -->
+    <section id="screen-gift" class="screen" aria-labelledby="gift-title" hidden>
+      <div class="card-glass gift-card">
+        <div class="screen-header">
+          <button class="btn-back" type="button" data-nav-target="screen-flowers">
+            ← Tiệm hoa
+          </button>
+          <span class="screen-step-badge">Bước 2 / 4 · Hộp Quà Bí Mật</span>
+        </div>
+
+        <h2 id="gift-title" class="section-title">Little gift</h2>
+        <p id="gift-instruction" class="section-desc">
+        </p>
+
+        <!-- Khu vực hộp quà tương tác -->
+        <div class="mystery-stage">
+          <div id="gift-box-wrapper" class="gift-box-wrapper" role="button" tabindex="0" aria-label="Nhấn để mở hộp quà bí mật">
+            <div class="gift-glow"></div>
+            <div class="gift-box">
+              <!-- Nắp hộp -->
+              <div class="gift-lid">
+                <div class="gift-bow">
+                  <span class="bow-loop bow-left"></span>
+                  <span class="bow-loop bow-right"></span>
+                  <span class="bow-knot"></span>
+                </div>
+                <div class="gift-lid-ribbon"></div>
+              </div>
+              <!-- Ánh sáng phát ra từ trong hộp -->
+              <div class="gift-inner-light"></div>
+              <!-- Thân hộp -->
+              <div class="gift-body">
+                <div class="gift-body-ribbon"></div>
+              </div>
+              <div class="gift-shadow"></div>
+            </div>
+          </div>
+
+          <!-- Thẻ quà tặng xuất hiện sau khi mở nắp -->
+          <div id="gift-card-reveal" class="gift-card-reveal hidden" aria-live="polite">
+            <!-- Nội dung thẻ quà với giao diện riêng sẽ được render tại đây -->
+          </div>
+        </div>
+
+        <div class="action-row" id="gift-initial-actions">
+          <button id="btn-open-gift" class="btn btn-primary btn-shimmer" type="button">
+            Open gift
+          </button>
+        </div>
+
+        <div class="action-row dual-actions hidden" id="gift-opened-actions">
+          <button id="btn-reopen-gift" class="btn btn-secondary" type="button">
+            Mở lại quà khác
+          </button>
+          <button id="btn-explore-gift" class="btn btn-primary btn-shimmer" type="button">
+            Next gift →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MÀN HÌNH 4: SECRET LETTER — LÁ THƯ DÀNH RIÊNG
+         ========================================== -->
+    <section id="screen-letter" class="screen" aria-labelledby="letter-title" hidden>
+      <div class="card-glass letter-screen-card">
+        <div class="screen-header">
+          <button class="btn-back" type="button" data-nav-target="screen-gift">
+            ← Hộp quà
+          </button>
+          <span class="screen-step-badge">Bước 3 / 4 · Lời Nhắn Nhỏ</span>
+        </div>
+
+        <h2 id="letter-title" class="section-title">Một lời nhắn dành riêng cho bạn</h2>
+        <p id="letter-subtitle" class="section-desc"></p>
+
+        <!-- Phong bì tương tác -->
+        <div id="envelope-stage" class="envelope-stage">
+          <div id="envelope-interactive" class="envelope-wrapper" role="button" tabindex="0" aria-label="Phong bì thư có con dấu trái tim, nhấn để mở">
+            <div class="envelope-back"></div>
+            <div class="envelope-letter-preview">
+              <span class="preview-line"></span>
+              <span class="preview-line short"></span>
+            </div>
+            <div class="envelope-front-Pocket"></div>
+            <div class="envelope-flap"></div>
+            <button id="btn-wax-seal" class="wax-seal" type="button" aria-label="Mở phong bì">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#fff8f0">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+            </button>
+          </div>
+          <p class="envelope-hint">Chạm vào phong bì để mở</p>
+        </div>
+
+        <!-- Tờ giấy thư màu kem mở rộng -->
+        <article id="letter-paper" class="letter-paper hidden" aria-live="polite">
+          <div class="paper-corner paper-corner-tl"></div>
+          <div class="paper-corner paper-corner-br"></div>
+          <header class="letter-paper-header">
+            <span class="letter-date">Ngày 20 tháng 10</span>
+            <span class="letter-ornament">✿ ✿ ✿</span>
+          </header>
+          <div id="letter-salutation" class="letter-salutation">Gửi bạn,</div>
+          <div id="letter-body-content" class="letter-body-content">
+            <!-- Các đoạn văn sẽ được hiển thị dần ở đây -->
+          </div>
+          <footer id="letter-signature" class="letter-signature">
+            Happy Vietnamese Women's Day! 💗
+          </footer>
+        </article>
+
+        <div id="letter-actions" class="action-row dual-actions hidden">
+          <button id="btn-replay-letter" class="btn btn-secondary" type="button">
+            Đọc lại thư
+          </button>
+          <button id="btn-to-finale" class="btn btn-primary btn-shimmer" type="button">
+            Tiếp tục →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MÀN HÌNH 5: FINALE — HAPPY 20/10
+         ========================================== -->
+    <section id="screen-finale" class="screen finale-theme" aria-labelledby="finale-title" hidden>
+      <div class="card-glass finale-card">
+        <div class="finale-crown-flower" aria-hidden="true">
+          <svg viewBox="0 0 120 80" class="blooming-lotus-svg">
+            <g class="lotus-petals">
+              <path d="M60 12 C48 32, 48 54, 60 68 C72 54, 72 32, 60 12 Z" fill="#f7b2bd" />
+              <path d="M60 68 C40 54, 28 36, 36 20 C48 30, 54 48, 60 68 Z" fill="#f497a9" opacity="0.9" />
+              <path d="M60 68 C80 54, 92 36, 84 20 C72 30, 66 48, 60 68 Z" fill="#f497a9" opacity="0.9" />
+              <path d="M60 68 C32 62, 16 48, 20 34 C36 38, 48 52, 60 68 Z" fill="#e88d96" opacity="0.75" />
+              <path d="M60 68 C88 62, 104 48, 100 34 C84 38, 72 52, 60 68 Z" fill="#e88d96" opacity="0.75" />
+            </g>
+            <circle cx="60" cy="48" r="5" fill="#ffe6a7" />
+          </svg>
+        </div>
+
+        <p class="eyebrow-tag finale-eyebrow">A Little Gift for You · 20/10</p>
+        <h2 id="finale-title" class="finale-hero-title">Happy 20/10</h2>
+
+        <!-- Nhắc lại bó hoa người nhận đã chọn -->
+        <div id="finale-selected-summary" class="finale-summary-pill">
+          <span>Hoa của bạn hôm nay: <strong id="finale-flower-name">Hoa Tulip Hồng</strong></span>
+        </div>
+
+        <div id="finale-wishes-box" class="finale-wishes-box">
+          <!-- Các dòng lời chúc kết được nạp từ script.js -->
+        </div>
+
+        <div class="action-row finale-actions">
+          <button id="btn-review-gift" class="btn btn-finale-outline" type="button">
+            Xem lại món quà
+          </button>
+          <button id="btn-reread-letter" class="btn btn-finale-outline" type="button">
+            Đọc lại lời nhắn
+          </button>
+          <button id="btn-finale-audio" class="btn btn-primary btn-shimmer" type="button">
+            Bật / Tắt nhạc
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
